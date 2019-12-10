@@ -1,6 +1,16 @@
+let fuelRequired (mass : int) : int =
+  match mass with
+  | x when x <= 0 -> 0
+  | _ -> mass / 3 - 2
 
-let fuelRequired (moduleMass : int) : int = moduleMass / 3 - 2
-let totalFuelRequired (moduleMasses : int list) : int = List.sum (List.map fuelRequired moduleMasses)
+let rec fuelRequired' (mass : int) : int =
+  let fuelMass = fuelRequired mass
+  match fuelMass with
+  | x when x <= 0 -> 0
+  | _ -> (fuelRequired mass) + (fuelRequired' (fuelRequired mass))
+ 
+let totalFuelRequired (masses : int list) : int =
+  List.sum (List.map fuelRequired' masses)
 
 let ourModuleMasses = [
   60052
@@ -103,5 +113,7 @@ let ourModuleMasses = [
   131991
   138445
   70673 ]
+
+let ourModuleMasses' = [ 14 ]
 
 printfn "%i" (totalFuelRequired ourModuleMasses)
